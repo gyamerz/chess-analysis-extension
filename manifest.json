@@ -1,0 +1,68 @@
+{
+  "manifest_version": 3,
+  "name": "Chess Analysis Overlay",
+  "version": "1.0.0",
+  "description": "Manual move legality previews and variation testing for Chess.com without using any chess engine.",
+  "author": "Chess Analysis Extension",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  
+  "host_permissions": [
+    "*://*.chess.com/*"
+  ],
+  
+  "background": {
+    "scripts": ["background.js"],
+    "type": "module"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["*://*.chess.com/*"],
+      "js": [
+        "modules/chessRules.js",
+        "modules/boardParser.js",
+        "modules/tactics.js",
+        "modules/overlayUI.js",
+        "modules/dragSystem.js",
+        "contentScript.js"
+      ],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  
+  "commands": {
+    "toggle-extension": {
+      "suggested_key": {
+        "default": "Alt+Shift+C",
+        "mac": "Alt+Shift+C"
+      },
+      "description": "Toggle the chess analysis overlay"
+    }
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "styles.css",
+        "pieces/alpha/*.png"
+      ],
+      "matches": ["*://*.chess.com/*"]
+    }
+  ],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "analysis-sandbox@yourdomain.com",
+      "strict_min_version": "109.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
